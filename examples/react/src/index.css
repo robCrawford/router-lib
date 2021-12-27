@@ -1,0 +1,19 @@
+body {
+  padding: 10px 30px;
+  background: #444;
+  font-family: sans-serif;
+  color: white;
+}
+a {
+  color: white;
+}
+nav {
+  border: 1px solid white;
+}
+ul {
+  list-style: none;
+  display: flex;
+}
+li {
+  padding: 10px;
+}

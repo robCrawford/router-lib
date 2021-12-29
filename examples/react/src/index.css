@@ -7,13 +7,41 @@ body {
 a {
   color: white;
 }
+button {
+  display: block;
+  padding: 8px;
+  margin: 10px 0 0;
+  background: #444;
+  color: white;
+  cursor: pointer;
+}
+select {
+  margin: 5px 0 20px;
+}
+header {
+  padding: 5px 0;
+  text-align: right;
+}
 nav {
+  padding: 5px 0;
   border: 1px solid white;
+  margin: 18px 0 40px;
 }
 ul {
+  padding: 0 28px;
   list-style: none;
   display: flex;
 }
 li {
   padding: 10px;
+}
+.hotel-result {
+  display: block;
+  background-color: white;
+  border: 1px solid black;
+  margin: 10px 0;
+  padding: 20px;
+  display: flex;
+  color: black;
+  flex-direction: column;
 }

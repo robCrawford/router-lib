@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -88,25 +88,61 @@ const Success: FC = () => {
 }
 
 const Voucher: FC = () => {
+  const history = useHistory();
+  const getCode = () => (document.getElementById('code')as HTMLTextAreaElement)?.value;
+  const handleSubmit = () => history.push('/voucher/confirm?code=' + getCode());
+
   return (
     <>
       <h2>Add A Voucher</h2>
-      <textarea placeholder="Enter Code" cols={50} />
-      <button><Link to="/voucher/confirm">Submit</Link></button>
+      <textarea id="code" placeholder="Enter Code" cols={50} />
+      <button type="button" onClick={handleSubmit}>Continue</button>
     </>
   );
 }
 
 const VoucherConfirm: FC = () => {
   const history = useHistory();
-  const handleClick = () => history.push('/');
+  const { isLoading, requiredDataResult } = useVoucherConfirmTransition();
+  const isError = requiredDataResult?.status !== 'success';
+  const handleClick = () => history.push(isError ? '/voucher' : '/');
 
-  return (
+  return isLoading ? <div>loading...</div> : (
     <>
-      <h2>Voucher Added!</h2>
-      <button type="button" onClick={handleClick}>Continue</button>
+      {isError ? <h2>Error!</h2> : <h2>Voucher Added!</h2>}
+      <button type="button" onClick={handleClick}>{isError ? 'Try again' : 'Continue'}</button>
     </>
   );
 }
 
 export default App;
+
+/// Route transition hooks -------------------------------
+function useVoucherConfirmTransition(): {
+  isLoading: boolean;
+  requiredDataResult: { status: string } | undefined;
+} {
+  const [requiredDataResult, setRequiredData] = useState<{ status: string }>();
+  const isLoading = !requiredDataResult;
+
+  useEffect(() => {
+    validateVoucher().then(({ status }) => {
+      setRequiredData({ status });
+    })
+  }, [])
+
+  return {
+    isLoading,
+    requiredDataResult
+  }
+}
+
+/// Services -------------------------------
+async function validateVoucher(): Promise<{ status: string }> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ status: Math.random() > 0.49 ? 'success' : 'error' })
+    }, 1000);
+  })
+}
+

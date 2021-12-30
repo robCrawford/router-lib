@@ -18,6 +18,10 @@ button {
 select {
   margin: 5px 0 20px;
 }
+.error {
+  padding: 10px 0 5px;
+  color: red;
+}
 header {
   padding: 5px 0;
   text-align: right;
